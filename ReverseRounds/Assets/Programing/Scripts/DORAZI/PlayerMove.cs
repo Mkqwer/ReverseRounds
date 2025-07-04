@@ -27,10 +27,10 @@ public class PlayerMove : MonoBehaviour
     private bool isDashing;
     private float dashTime;
 
-    public List<Card> playerCards = new List<Card>();
+    public List<CardList> playerCards = new List<CardList>();
 
     // 카드 추가
-    public void AddCard(Card card)
+    public void AddCard(CardList card)
     {
         playerCards.Add(card);
     }
@@ -63,8 +63,8 @@ public class PlayerMove : MonoBehaviour
 
         controls.Player.Debug.performed += _ =>
         {
-            AddCard(Card.jumpCard);
-            Debug.Log(Card.jumpCard.Name);
+            AddCard(CardList.jumpCard);
+            Debug.Log(CardList.jumpCard.Name);
             UseCard(0);
 
         };
@@ -87,7 +87,6 @@ public class PlayerMove : MonoBehaviour
     {
         controls.Enable();
     }
-
     private void OnDisable()
     {
         controls.Disable();
