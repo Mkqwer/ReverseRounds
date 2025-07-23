@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
 {
-    public Transform playerTransform; // Player 오브젝트의 Transform을 할당
-    public float radius = 1.0f;       // 원 반경
     public GameObject bulletPrefab;   // 발사할 Bullet 프리팹
-    public float bulletSpeed = 10f;   // 총알 속도
+    public Transform playerTransform; // Player 오브젝트의 Transform을 할당
+
+    float radius = 1.0f;       // 원 반경
+    
+    float nextFireTime = 0f;  // 다음 발사 시간
 
     void Update()
     {
+        nextFireTime += Time.deltaTime;
         if (playerTransform == null)
             return;
 
@@ -34,7 +37,7 @@ public class PlayerFire : MonoBehaviour
             transform.position = new Vector3(targetPos.x, targetPos.y, transform.position.z);
 
             // 마우스 클릭 시 총알 발사
-            if (Input.GetMouseButtonDown(0) && bulletPrefab != null)
+            if (Input.GetMouseButtonDown(0) && bulletPrefab != null && nextFireTime >= PlayerManager.Instance.fireRate)
             {
                 GameObject bullet = Instantiate(
                     bulletPrefab,
@@ -45,8 +48,9 @@ public class PlayerFire : MonoBehaviour
                 Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
                 if (rb != null)
                 {
-                    rb.velocity = dir * bulletSpeed;
+                    rb.velocity = dir * PlayerManager.Instance.bulletSpeed;
                 }
+                nextFireTime = 0f; // 발사 후 다음 발사 시간 초기화
             }
         }
     }
